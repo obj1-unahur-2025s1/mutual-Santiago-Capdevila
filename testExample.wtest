@@ -1,9 +1,53 @@
-import example.pepita
+import example.*
 
-describe "group of tests for pepita" {
+describe "Test mutual" {
+  const trek1 = new SalidaDeTrekking(kilometros = 100, diasDeSol= 130, idiomas = #{"ingles"})
+  const trek2 = new SalidaDeTrekking(kilometros = 50, diasDeSol= 240, idiomas = #{"ingles"})
+  const trek3 = new SalidaDeTrekking(kilometros = 250, diasDeSol= 130, idiomas = #{"ingles"})
+  const playa1 = new ViajeDePlaya(largo = 1000, idiomas = #{"portugues"})
+  const playa2 = new ViajeDePlaya(largo = 2000, idiomas = #{"portugues"})
+  const gim1 = new ClaseDeGimnasia()
+  const roque = new Socio(maximoActividades = 2)
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+  method initialize() {
+    roque.registrarActividad(playa1)
+    roque.registrarActividad(playa2)
+    // roque.registrarActividad(gim1)
   }
 
+  test "Primera salida lleva 2 días" {
+    assert.equals(2, trek1.dias())
+  }
+
+  test "Segunda salida lleva 2 días" {
+    assert.equals(1, trek2.dias())
+  }
+
+  test "Tercera salida lleva 2 días" {
+    assert.equals(5, trek3.dias())
+  }
+
+  test "Primera salida implica esfuerzo" {
+    assert.that(trek1.implicaEsfuerzo())
+  }
+
+  test "Segunda salida implica esfuerzo" {
+    assert.notThat(trek2.implicaEsfuerzo())
+  }
+
+  test "Tercera salida implica esfuerzo" {
+    assert.that(trek3.implicaEsfuerzo())
+  }
+
+  test "Roque es adorador del sol" {
+    assert.that(roque.esAdoradorDelSol())
+  }
+
+  test "Las actividades esforzadas es solo el viaje de 2000 metros" {
+    assert.equals([playa2], roque.actividadesEsforzadas())
+  }
+
+  test "Roque no puede hacer gim porque ya hizo sus 2 actividades máximas" {
+    assert.throwsExceptionWithMessage("El socio alcanzó el máximo de actividades", {roque.registrarActividad(gim1)})
+  }
 }
